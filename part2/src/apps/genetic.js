@@ -1,15 +1,15 @@
 import 'babel-polyfill';
 import { CANVAS_WIDTH, CANVAS_HEIGHT } from '../game/constants';
 import { Runner } from '../game';
-import GeneticModel from '../ai/models/genetic/GeneticModel';
-import RandomModel from '../ai/models/random/RandomModel';
+import ModeloAleatorio from '../ai/models/ModeloAleatorio/ModeloAleatorio';
+import ModeloGenetico from '../ai/models/ModeloGenetico/ModeloGenetico';
 
 // const DINO_COUNT = 10;
 
 let runner = null;
 
 const rankList = [];
-const geneticModel = new GeneticModel();
+const geneticModel = new ModeloGenetico();
 
 let firstTime = true;
 
@@ -36,7 +36,7 @@ function handleReset(Dinos) {
     // console.info(Dinos)
     Dinos.forEach((dino) => {
       // console.info("happened");
-      dino.model = new RandomModel();
+      dino.model = new ModeloAleatorio();
       dino.model.init();
     });
 
@@ -44,13 +44,13 @@ function handleReset(Dinos) {
   else {
     // Train the model before restarting.
     console.info('Training');
-    const chromosomes = rankList.map((dino) => dino.model.getChromosome());
+    const chromosomes = rankList.map((dino) => dino.model.getCromossomo());
     // console.info(chromosomes)
     // Clear rankList
     rankList.splice(0);
     geneticModel.fit(chromosomes);
     Dinos.forEach((dino, i) => {
-      dino.model.setChromosome(chromosomes[i]);
+      dino.model.setCromossomo(chromosomes[i]);
     });
   }
 }
